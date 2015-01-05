@@ -1,0 +1,70 @@
+---
+  #- name: Install libselinux-python
+    #yum: name=libselinux-python state=installed
+
+  - name: install default packages
+    yum: name={{ item }} state=latest
+    with_items:
+      - libselinux-python
+      - ntp
+      - wget
+      - screen
+      - java7-devel
+##      - "@Development tools"
+
+  - name: Disable selinux
+    selinux: state=disabled
+
+  #- name: disable selinux
+  #  command: /sbin/setenforce 0
+  #  ignore_errors: True
+
+  - name: Ensure ntpd is running and enabled
+    service: name=ntpd state=started enabled=yes
+
+  - name: Set java path for all users
+    template : src=java.sh.j2 dest=/etc/profile.d/java.sh
+
+  #- name:  Set vm.swappiness to 0
+    #sysctl: name=vm.swappiness value=0 state=present reload=yes sysctl_set=yes ignoreerrors=yes
+
+  - name: ensure iptables is stopped and is not running at boot time.
+    service: name=iptables state=stopped enabled=no
+
+  #- name: ensure iptables6 is stopped and is not running at boot time.
+    #service: name=iptables6 state=stopped enabled=no
+
+  #- name: Disable transparent hugepage
+    #shell: echo 'for i in /sys/kernel/mm/*transparent_hugepage/enabled; do echo never > $i; done' >> /etc/rc.local
+    #shell: echo 'for i in /sys/kernel/mm/*transparent_hugepage/defrag; do echo never > $i; done' >> /etc/rc.local
+    #shell: echo 'for i in /sys/kernel/mm/*transparent_hugepage/khugepaged/defrag; do echo no > $i; done' >> /etc/rc.local
+    #shell: for i in /sys/kernel/mm/*transparent_hugepage/enabled; do echo never > $i; done
+    #shell: for i in /sys/kernel/mm/*transparent_hugepage/defrag; do echo never > $i; done
+    #shell: for i in /sys/kernel/mm/*transparent_hugepage/khugepaged/defrag; do echo no $i; done
+
+#### AWS specific
+
+#  - name: ensure cups is stopped and is not running at boot time.
+#    service: name=cups state=stopped enabled=no
+
+#  - name: ensure postfix is stopped and is not running at boot time.
+#    service: name=postfix state=stopped enabled=no
+
+
+############################################################################################
+##Remove existing mount points
+#sed '/^\/dev\/xvd[b-z]/d' -i /etc/fstab
+
+##Fromat emphemeral drives and create mounts
+#for drv in `ls /dev/xv* | grep -v xvda`
+#do
+  #umount $drv || :
+  #mkdir -p ${drv//dev/data}
+  #echo "$drv ${drv//dev/data} ext4 defaults,noatime,nodiratime 0 0" >> /etc/fstab
+  #nohup mkfs.ext4 -m 0 -T largefile4 $drv &
+#done
+#wait
+
+###########################################################################################
+## Re-size root partition
+#(echo u;echo d; echo n; echo p; echo 1; cat /sys/block/xvda/xvda1/start; echo; echo w) | fdisk /dev/xvda || :

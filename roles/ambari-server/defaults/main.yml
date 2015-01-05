@@ -1,0 +1,6 @@
+---
+
+ambari_repo_url: "http://public-repo-1.hortonworks.com/ambari/centos{{ ansible_distribution_major_version }}/1.x/updates/1.7.0/ambari.repo"
+ambari_repo_gpg_key_url: "http://s3.amazonaws.com/dev.hortonworks.com/ambari/centos6/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins"
+
+java_home: "/etc/alternatives/java_sdk"

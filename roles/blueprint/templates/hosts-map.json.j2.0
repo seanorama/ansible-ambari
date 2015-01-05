@@ -1,0 +1,42 @@
+{
+  "blueprint" : "multi-nodes-hdp",
+  "default_password" : "{{ ambari['default_password'] }}",
+  "host_groups" :[
+    {
+      "name" : "ambari",
+      "hosts" : [
+        {
+          "fqdn" : "{{ hostvars[groups['ambari'][0]]['ansible_fqdn'] }}"
+        }
+      ]
+    },
+    {
+      "name" : "master1",
+      "hosts" : [
+        {
+          "fqdn" : "{{ hostvars[groups['master1'][0]]['ansible_fqdn'] }}"
+        }
+      ]
+    },
+    {
+      "name" : "master2",
+      "hosts" : [
+        {
+          "fqdn" : "{{ hostvars[groups['master2'][0]]['ansible_fqdn'] }}"
+        }
+      ]
+    },
+    {
+      "name" : "slaves",
+      "hosts" : [
+      {% for host in groups['slaves'] %}
+        {
+          "fqdn" : "{{ hostvars[host]['ansible_fqdn'] }}"
+        }{% if not loop.last %}
+        ,
+        {% endif %}
+      {% endfor %}
+      ]
+    }
+  ]
+}

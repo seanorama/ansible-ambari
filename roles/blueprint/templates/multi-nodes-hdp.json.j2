@@ -1,0 +1,77 @@
+{
+  "configurations" : [
+    {
+      "nagios-env" : {
+        "nagios_contact" : "{{ ambari['nagios_contact'] }}"
+      }
+    },
+    {
+      "hive-site" : {
+        "javax.jdo.option.ConnectionUserName" : "{{ ambari['hive_user'] }}",
+        "javax.jdo.option.ConnectionPassword" : "{{ ambari['hive_pass'] }}"
+      }
+    }
+  ],
+  "host_groups" : [
+    { "name" : "ambari",
+      "components" : [
+        { "name" : "GANGLIA_MONITOR" },
+        { "name" : "GANGLIA_SERVER" },
+        { "name" : "HCAT" },
+        { "name" : "HDFS_CLIENT" },
+        { "name" : "HIVE_CLIENT" },
+        { "name" : "MAPREDUCE2_CLIENT" },
+        { "name" : "NAGIOS_SERVER" },
+        { "name" : "PIG" },
+        { "name" : "TEZ_CLIENT" },
+        { "name" : "YARN_CLIENT" },
+        { "name" : "ZOOKEEPER_SERVER" }
+      ],
+      "cardinality" : "1"
+    },
+    { "name" : "master1",
+      "components" : [
+        { "name" : "APP_TIMELINE_SERVER" },
+        { "name" : "GANGLIA_MONITOR" },
+        { "name" : "HIVE_METASTORE" },
+        { "name" : "HIVE_SERVER" },
+        { "name" : "JOURNALNODE" },
+        { "name" : "MYSQL_SERVER" },
+        { "name" : "NAMENODE" },
+        { "name" : "WEBHCAT_SERVER" },
+        { "name" : "ZOOKEEPER_SERVER" }
+      ],
+      "cardinality" : "2"
+    },
+    { "name" : "master2",
+      "components" : [
+        { "name" : "SECONDARY_NAMENODE" },
+        { "name" : "RESOURCEMANAGER" },
+        { "name" : "HISTORYSERVER" },
+        { "name" : "ZOOKEEPER_SERVER" }
+      ],
+      "cardinality" : "3"
+    },
+    { "name" : "slaves",
+      "components" : [
+        { "name" : "DATANODE" },
+        { "name" : "GANGLIA_MONITOR" },
+        { "name" : "HCAT" },
+        { "name" : "HDFS_CLIENT" },
+        { "name" : "HIVE_CLIENT" },
+        { "name" : "JOURNALNODE" },
+        { "name" : "MAPREDUCE2_CLIENT" },
+        { "name" : "NODEMANAGER" },
+        { "name" : "PIG" },
+        { "name" : "TEZ_CLIENT" },
+        { "name" : "YARN_CLIENT" },
+        { "name" : "ZOOKEEPER_CLIENT" }
+      ],
+      "cardinality" : "4"
+    }
+  ],
+  "Blueprints" : {
+    "stack_name" : "{{ ambari['stack_name'] }}",
+    "stack_version" : "{{ ambari['stack_version'] }}"
+  }
+}

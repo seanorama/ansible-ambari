@@ -1,0 +1,8 @@
+---
+- name: Install Ambari repo.
+  get_url: url="{{ ambari_repo_url }}" dest=/etc/yum.repos.d/ambari.repo
+
+- name: Import Ambari Repo GPG key.
+  rpm_key:
+    key: "{{ ambari_repo_gpg_key_url }}"
+    state: present

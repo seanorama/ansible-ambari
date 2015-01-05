@@ -1,0 +1,14 @@
+---
+dependencies: []
+#- { role: seanorama.ambari-repo }
+
+galaxy_info:
+  author: seanorama
+  description: Installation for Apache Ambari agent
+  company: "Sean Roberts"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.4
+  platforms:
+  - name: EL
+    versions:
+    - 6

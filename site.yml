@@ -1,0 +1,38 @@
+---
+
+- name: Needed for accelerated mode
+  hosts: all
+  sudo: yes
+  roles:
+    - { role: geerlingguy.repo-epel }
+  tasks:
+    - yum: name=python-keyczar state=latest
+    - service: name=iptables state=stopped enabled=no
+    - lineinfile: state=present create=yes dest=/etc/sudoers.d/888-dont-requiretty line="Defaults !requiretty" backup=yes
+
+- name: Apply common configuration to all target nodes
+  hosts: all
+  accelerate: True
+  sudo: yes
+  roles:
+    - common
+
+- name: Ambari server
+  hosts: ambari
+  accelerate: True
+  sudo: yes
+  roles:
+    - ambari-server
+
+- name: Ambari agent
+  hosts: all
+  accelerate: True
+  sudo: yes
+  roles:
+    - ambari-agent
+
+- name: run the blueprint
+  hosts: ambari
+  sudo: yes
+  roles:
+    - blueprint

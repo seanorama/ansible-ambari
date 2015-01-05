@@ -1,0 +1,32 @@
+# update with your host names
+[ambari]
+ec2-54-149-240-97.us-west-2.compute.amazonaws.com
+
+[master1]
+ec2-54-149-155-38.us-west-2.compute.amazonaws.com
+
+[master2]
+ec2-54-148-222-189.us-west-2.compute.amazonaws.com
+
+# as many slaves as you want. 1 hostname per line
+[slaves]
+ec2-54-149-167-6.us-west-2.compute.amazonaws.com
+
+[all:vars]
+ansible_ssh_user=ec2-user
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+
+##################################
+# Shouldn't need to touch the rest
+
+[masters:children]
+master1
+master2
+
+[all:children]
+ambari
+master1
+master2
+slaves
+
