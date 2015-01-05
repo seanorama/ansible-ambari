@@ -2,21 +2,24 @@
 
 java_home: /etc/alternatives/java_sdk
 
-
+# paramaters passed to the various ambari roles
 ambari:
 
   # ambari API vars
   stack_name : HDP
   stack_version : 2.2
 
+  # blueprint & cluster creation
   blueprint_name : example
   cluster_name : serenity
+
+  # hadoop configuration
   default_password : hadoop
   hive_user : hive
   hive_pass : supersecret
-
   nagios_contact : root@localhost
 
-# do not touch
+####################
+# don't touch this unless you know what you're doing
   ambari_server: "{{ hostvars[groups['ambari'][0]]['ansible_fqdn'] }}"
 #  ambari_server: "{{ hostvars[groups['ambari'][0]]['ansible_ssh_host'] }}"
